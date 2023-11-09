@@ -3,10 +3,10 @@ import TodoListItem from './TodoListItem';
 
 
 
-function ToDoList (props) {
+function ToDoList ({todoList}) {
     return (
     <ul>
-    {props.todoList.map((todoItem)=> (
+    {todoList.map((todoItem)=> (
         <TodoListItem key={todoItem.id} todo ={todoItem}/>
     ))}
     </ul>
