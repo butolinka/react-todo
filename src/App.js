@@ -16,11 +16,11 @@ function App() {
     setTodoList((previousTodoList) => [...previousTodoList, newTodo]);
   };
   return (
-    <div>
+    <>
       <h1>Todo List </h1>
       <AddToDoForm onAddTodo={addTodo} />
       <ToDoList todoList={todoList}/>
-    </div>
+    </>
   );
 }
 
