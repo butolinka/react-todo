@@ -1,10 +1,10 @@
 import React from "react";
 
-function InputWithLabel ({todoTitle, handlerTitleChange, label}){
+function InputWithLabel ({todoTitle, handlerTitleChange, children}){
 
     return(
         <>
-            <label htmlFor='todoTitle'>{label} </label>
+            <label htmlFor='todoTitle'>{children} </label>
             <input 
             type="text" 
             id='todoTitle' 
