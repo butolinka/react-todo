@@ -1,18 +1,18 @@
 import React from "react";
 
-function InputWithLabel ({todoTitle, handlerTitleChange, children}){
+function InputWithLabel ({todoTitle, handlerTitleChange, children, id, type ='text', name='title'}){
     const inputRef = React.useRef();
     React.useEffect(() =>{
             inputRef.current.focus();
     });
     return(
         <>
-            <label htmlFor='todoTitle'>{children} </label>
+            <label htmlFor={id}>{children} </label>
             <input 
             ref={inputRef}
-            type="text" 
-            id='todoTitle' 
-            name='title' 
+            type={type}
+            id={id} 
+            name={name}
             value={todoTitle}
             onChange={handlerTitleChange}/>
         </> 
