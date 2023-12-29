@@ -1,6 +1,7 @@
 import React from 'react';
 import ToDoList from './ToDoList';
 import AddToDoForm from './AddTodoForm';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
 function App() {
   const [todoList, setTodoList] = React.useState([]);
@@ -39,7 +40,6 @@ function App() {
         title: title.title,
       },
     };
-    console.log('title:', title);
     
   const requestOptions = {
     method: "POST",
@@ -63,18 +63,51 @@ function App() {
   }
 };
 
-  function removeTodo(id){
-    const todoUpgrade = todoList.filter((todo)=> id !== todo.id);
+  const removeTodo = async (id) => {
+    try{
+      const deleteUrl = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}/${id}`;
+      const deleteoptions = {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_TOKEN}`,
+          
+        },
+      };
+      const response = await fetch(deleteUrl, deleteoptions);
+
+      if(!response.ok){
+        throw new Error(`Error: ${response.status}`);
+      }
+      const todoUpgrade = todoList.filter((todo)=> id !== todo.id);
     setTodoList(todoUpgrade);
-  }
+    } catch(error){
+      console.log(error.message);
+    }
+    
+  };
   return (
-    <>
-    <h1>Todo List </h1>
-      <AddToDoForm onAddTodo={addNewTodo} />
-    {isLoading? (<p>Loading...</p> ):
-      (<ToDoList todoList={todoList} onRemoveTodo={removeTodo}/>
-      )}
-    </>
+    <BrowserRouter>
+      <Routes>
+      <Route
+        path="/"
+        element={
+          <>
+        <h1>Todo List </h1>
+          <AddToDoForm onAddTodo={addNewTodo} />
+            {isLoading? (<p>Loading...</p> ):
+                (<ToDoList todoList={todoList} onRemoveTodo={removeTodo}/>
+                )}
+          </>
+        }
+        />
+        <Route
+        path="/new"
+        element={
+          <h1>New Todo List</h1>
+        }
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
