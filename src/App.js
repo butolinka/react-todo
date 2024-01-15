@@ -2,6 +2,7 @@ import React from 'react';
 import ToDoList from './ToDoList';
 import AddToDoForm from './AddTodoForm';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import styles from './TodoListItem.module.css';
 
 function App() {
   const [todoList, setTodoList] = React.useState([]);
@@ -92,7 +93,7 @@ function App() {
         path="/"
         element={
           <>
-        <h1>Todo List </h1>
+        <h1 className={styles.h1}>Todo List </h1>
           <AddToDoForm onAddTodo={addNewTodo} />
             {isLoading? (<p>Loading...</p> ):
                 (<ToDoList todoList={todoList} onRemoveTodo={removeTodo}/>
