@@ -1,0 +1,103 @@
+.ListItem{
+    text-align: left;
+    width: 15rem;
+    font-family: 'Overpass', sans-serif;
+    color: #3C0753;
+    font-size: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+.h1{
+    color: #3C0753;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+}
+.form{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.List{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    font-family: 'Overpass', sans-serif;
+    color: #030637;
+    padding: 0;
+}
+.btn{
+    font-family: 'Overpass', sans-serif;
+    background-color: #D24545;
+    color: #3C0753;
+    border: none;
+    border-radius: 25px;
+    padding: 1rem;
+    width: 5rem;
+    text-align: center;
+    margin-top: 0.5rem;
+}
+.btn:hover{
+    scale: 1.3;
+}
+.label{
+    font-family: 'Overpass', sans-serif;
+    color: #030637;
+    margin-bottom: 0.5rem;
+}
+body{
+    background-image: url(https://images.unsplash.com/photo-1601662528567-526cd06f6582?q=80&w=1315&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.hr{
+    border-top: solid #030637 0.2rem;
+    width: 15rem;
+}
+
+.input{
+    border-radius: 5px;
+    height: 2.5rem;
+    max-width: max-content;
+    font-size: 1rem;
+    color: #030637;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    background-color: #E6BAA3;
+}
+@media (min-width: 270px) and (max-width: 350px) {
+    .btn{
+    border-radius: 15px;
+    width: 5rem;
+    height: 2rem;
+    text-align: center;
+    font-size: 1rem;
+    padding: 5px;
+    margin-bottom: 0.1rem;
+}
+.ListItem{
+    text-align: center;
+    width: 10rem;
+    font-size: 1rem;
+    margin: 0.2rem;
+}
+.hr{
+    border-top: solid #030637 0.1rem;
+    width: 10rem;
+}
+.input{
+    margin-bottom: 1rem;
+    height: 2rem;
+}
+}
+
+
+

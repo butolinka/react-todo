@@ -1,4 +1,5 @@
 import React from "react";
+import styles from './TodoListItem.module.css';
 
 function InputWithLabel ({todoTitle, handlerTitleChange, children, id, type ='text', name='title'}){
     const inputRef = React.useRef();
@@ -7,14 +8,14 @@ function InputWithLabel ({todoTitle, handlerTitleChange, children, id, type ='te
     });
     return(
         <>
-            <label htmlFor={id}>{children} </label>
+            <label htmlFor={id} className={styles.label} >{children} </label>
             <input 
             ref={inputRef}
             type={type}
             id={id} 
             name={name}
             value={todoTitle}
-            onChange={handlerTitleChange}/>
+            onChange={handlerTitleChange} className={styles.input}/>
         </> 
             );
 };
