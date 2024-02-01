@@ -1,6 +1,6 @@
 import React from 'react';
-import ToDoList from './ToDoList';
-import AddToDoForm from './AddTodoForm';
+import ToDoList from './components/ToDoList';
+import AddToDoForm from './components/AddTodoForm';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import styles from './TodoListItem.module.css';
 
@@ -95,7 +95,7 @@ function App() {
           <>
         <h1 className={styles.h1}>Todo List </h1>
           <AddToDoForm onAddTodo={addNewTodo} />
-            {isLoading? (<p>Loading...</p> ):
+            {isLoading? (<p className={styles.loader}>Loading...</p> ):
                 (<ToDoList todoList={todoList} onRemoveTodo={removeTodo}/>
                 )}
           </>

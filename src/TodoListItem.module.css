@@ -15,6 +15,21 @@
     text-align: center;
     font-family: 'Roboto', sans-serif;
 }
+@keyframes fadeIn {
+    0% {
+    opacity: 0;
+    }
+    100% {
+    opacity: 1;
+    }
+}
+.loader{
+    color: #3C0753;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 2rem;
+    animation: fadeIn 0.5s ease-in-out;
+}
 .form{
     text-align: center;
     display: flex;
