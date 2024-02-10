@@ -2,12 +2,16 @@ import React from 'react';
 import ToDoList from './components/ToDoList';
 import AddToDoForm from './components/AddTodoForm';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
-import styles from './TodoListItem.module.css';
+import styles from './components/TodoListItem.module.css';
 
 function App() {
   const [todoList, setTodoList] = React.useState([]);
   const [isLoading, setIsloading] = React.useState(true);
-  const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}`;
+  const [sorting, setSorting] = React.useState("asc");
+  const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}?view=Grid%20view&sort[0][field]=title&sort[0][direction]=asc`;
+  const toggleSorting = () => {
+    setSorting(sorting === "asc" ? "desc" : "asc");
+  };
   const fetchData = async() => {
     const options = {
       method: 'GET',
@@ -21,8 +25,19 @@ function App() {
     if (!response.ok){
       throw new Error(`Error:${response.status}`);
     }
-    const data = await response.json();
-    const todos = data.records.map((todo) =>{
+    const sortTodoAPI = await response.json();
+    sortTodoAPI.records.sort((objectA, objectB) =>{
+    const titleA = objectA.fields.title.toUpperCase();
+    const titleB = objectB.fields.title.toUpperCase();
+    if(titleA > titleB){
+      return sorting === "asc" ? -1 : 1;
+    }
+    if (titleA < titleB){
+      return sorting === "asc" ? 1 : -1;
+    }
+    return 0;
+    });
+    const todos = sortTodoAPI.records.map((todo) =>{
       return {id: todo.id, title: todo.fields.title};
     });
     setTodoList(todos);
@@ -34,7 +49,7 @@ function App() {
     React.useEffect(() =>{
     fetchData();
      // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [sorting]);
   const addNewTodo = async(title) =>{
     const addTitle = {
       fields: {
@@ -96,7 +111,12 @@ function App() {
         <h1 className={styles.h1}>Todo List </h1>
           <AddToDoForm onAddTodo={addNewTodo} />
             {isLoading? (<p className={styles.loader}>Loading...</p> ):
-                (<ToDoList todoList={todoList} onRemoveTodo={removeTodo}/>
+                (<ToDoList 
+                  todoList={todoList} 
+                  onRemoveTodo={removeTodo}
+                  toggleSorting = {toggleSorting}
+                  sorting = {sorting}
+                />
                 )}
           </>
         }

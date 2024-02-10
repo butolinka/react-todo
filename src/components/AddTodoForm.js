@@ -1,6 +1,6 @@
 import React from 'react';
 import InputWithLabel from './InputWithLabel';
-import styles from '../TodoListItem.module.css';
+import styles from './TodoListItem.module.css';
 import PropTypes from 'prop-types';
 
 
