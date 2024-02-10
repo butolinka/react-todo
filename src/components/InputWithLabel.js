@@ -1,5 +1,5 @@
 import React from "react";
-import styles from '../TodoListItem.module.css';
+import styles from './TodoListItem.module.css';
 import PropTypes from "prop-types";
 
 function InputWithLabel ({todoTitle, handlerTitleChange, children, id, type ='text', name='title'}){
