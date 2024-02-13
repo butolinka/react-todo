@@ -2,6 +2,7 @@ import React from 'react';
 import ToDoList from './components/ToDoList';
 import AddToDoForm from './components/AddTodoForm';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import Notes from './components/Notes';
 import styles from './components/TodoListItem.module.css';
 
 function App() {
@@ -27,8 +28,8 @@ function App() {
     }
     const sortTodoAPI = await response.json();
     sortTodoAPI.records.sort((objectA, objectB) =>{
-    const titleA = objectA.fields.title.toUpperCase();
-    const titleB = objectB.fields.title.toUpperCase();
+    const titleA = (objectA.fields && objectA.fields.title) ? objectA.fields.title.toUpperCase() : '';
+    const titleB = (objectB.fields && objectB.fields.title) ? objectB.fields.title.toUpperCase() : '';
     if(titleA > titleB){
       return sorting === "asc" ? -1 : 1;
     }
@@ -119,6 +120,15 @@ function App() {
                 />
                 )}
           </>
+        }
+        />
+        <Route
+        path="/notes"
+        element ={
+          <Notes
+          todoList = {todoList}
+          setTodoList = {setTodoList}
+          />
         }
         />
         <Route
