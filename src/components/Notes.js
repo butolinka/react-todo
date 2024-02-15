@@ -94,7 +94,7 @@ function Notes({todoList, setTodoList}){
         const apiKey = process.env.REACT_APP_AIRTABLE_API_TOKEN;
         const baseId = process.env.REACT_APP_AIRTABLE_BASE_ID;
         const tableName = process.env.REACT_APP_TABLE_NAME;
-        const url = `https://api.airtable.com/v0/${baseId}/${tableName}?filterByFormula=({todoId} = '${todoId}')`;
+        const url =  `https://api.airtable.com/v0/${baseId}/${tableName}`;
         
         const options = {
         method: 'GET',
@@ -102,9 +102,8 @@ function Notes({todoList, setTodoList}){
             'Authorization': `Bearer ${apiKey}`,
         },
         };
-    
         try {
-        const response = await fetch(`${url}/${todoId}`, options);
+        const response = await fetch(url, options);
         if (!response.ok) {
             throw new Error(`Failed to fetch notes for todo ${todoId}: ${response.status} ${response.statusText}`);
         }
