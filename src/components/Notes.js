@@ -1,18 +1,22 @@
 
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Link} from 'react-router-dom';
 import styles from './TodoListItem.module.css';
 
 function Notes({todoList, setTodoList}){
     const [notes, setNotes] = useState({});
     const [showInput, setShowInput] = useState({});
+    useEffect(() => {
+        // Fetch notes when the component mounts
+        fetchNotes();
+    }, []);
 
-
-    const handleAddNoteClick = (todoId) =>{
+    const handleAddNoteClick = async (todoId) =>{
         setShowInput((prev) =>({
             ...prev,
             [todoId]: true,
         }));
+        await fetchNotes(todoId);
     };
     const handleNoteChange = (e, todoId)=>{
         const {value} = e.target;
@@ -55,30 +59,62 @@ function Notes({todoList, setTodoList}){
         const tableName = process.env.REACT_APP_TABLE_NAME;
         const url = `https://api.airtable.com/v0/${baseId}/${tableName}`;
 
+        const addedNote = {
+            fields: {
+            notes: noteContent,
+              //notes: [...(todoList.find((todo) => todo.id === id).notes || []), noteContent],
+            },
+        };
+    
         const options = {
             method: 'PATCH',
             headers: {
-                'Authorization': `Bearer ${apiKey}`,
-                'Content-Type' : 'application/json'
+            Authorization: `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                fields:{
-                    'notes': [...(todoList.find(todo=>todo.id===todoId).notes||[]),noteContent]
-                }
-            })
+            body: JSON.stringify(addedNote),
         };
-        try{
-            const response = await fetch(url, options);
-            if (!response.ok){
-                throw new Error(`Failed to create note in Airtable: ${response.status} ${response.statusText}`);
+    
+        try {
+            const response = await fetch(`${url}/${todoId}`, options);
+            if (!response.ok) {
+            throw new Error(
+                `Failed to create note in Airtable: ${response.status} ${response.statusText}`
+            );
             }
-            const data  = await response.json();
+            const data = await response.json();
             return data;
-        } catch (error){
-            console.error("Error creating note:", error.message);
+        } catch (error) {
+            console.error('Error creating note:', error.message);
             return null;
         }
     }
+
+    const fetchNotes = async (todoId) => {
+        const apiKey = process.env.REACT_APP_AIRTABLE_API_TOKEN;
+        const baseId = process.env.REACT_APP_AIRTABLE_BASE_ID;
+        const tableName = process.env.REACT_APP_TABLE_NAME;
+        const url = `https://api.airtable.com/v0/${baseId}/${tableName}?filterByFormula=({todoId} = '${todoId}')`;
+        
+        const options = {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${apiKey}`,
+        },
+        };
+    
+        try {
+        const response = await fetch(`${url}/${todoId}`, options);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch notes for todo ${todoId}: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data;
+        } catch (error) {
+        console.error('Error fetching notes:', error.message);
+        return null;
+        }
+    };
     
     return (
         <div>
@@ -86,7 +122,7 @@ function Notes({todoList, setTodoList}){
             <ul className={styles.List}>
             {todoList.map((todo) => (
                 <li key={todo.id} className={styles.ListItemNote}>
-                    <h3>{todo.title}</h3>
+                    <h3> <img className={styles.img} width="16" height="16" src="https://img.icons8.com/office/16/goal--v1.png" alt="goal--v1"/>{todo.title}</h3>
                     {showInput[todo.id] &&(
                     <form onSubmit={(e)=> handleNoteSubmit(e, todo.id)} className={styles.form}>
                         <input
